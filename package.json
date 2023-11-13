@@ -1,11 +1,13 @@
 {
   "name": "samplefullstack1",
   "version": "1.0.0",
+  "type": "module",
   "description": "quick demo on full stack project (getting my reps in)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "express1": "nodemon --env-file .env main.js"
+    "mainjs1": "nodemon --env-file .env ./public/apiRoutes.js",
+    "server1": "nodemon --env-file .env ./public/main.js"
   },
   "keywords": [],
   "author": "",
