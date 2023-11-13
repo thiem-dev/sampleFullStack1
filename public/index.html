@@ -9,13 +9,24 @@
     <h1>Thiem's first full stack app</h1>
     <h2>PERN (localhost will connect later)</h2>
 
-    <form onsubmit="event.preventDefault();">
+    <form id="userForm">
         <label for="fname">First name:</label><br>
         <input type="text" id="fname" name="fname" value="John"><br>
         <label for="lname">Last name:</label><br>
         <input type="text" id="lname" name="lname" value="Doe"><br><br>
         <input type="submit" value="Submit">
     </form> 
+
+    <div class="dashboard">
+        <div class="dashboardContents">
+            <div id="1">
+                <div class="title">Halo</div>
+                <div class="developer">Bungie</div>
+                <div class="shopLocation">Shop Location: Game Stop - Nashville</div>
+            </div>
+        </div>
+    </div>
     
+    <script src="./main.js"></script>
 </body>
 </html>
