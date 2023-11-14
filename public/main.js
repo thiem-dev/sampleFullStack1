@@ -1,8 +1,3 @@
-// import apiRoutes.js
-// import cors https://www.npmjs.com/package/cors
-
-// https://wesbos.com/javascript/05-events/prevent-default-and-form-events
-
 
 window.addEventListener('DOMContentLoaded', (event) =>{
     init();
@@ -63,7 +58,7 @@ function initEventListeners(){
     });
 }
 
-
+//  ------------------------------------------------------- UTIL FUNCTIONS
 
 async function getData(url){
     try{
@@ -102,8 +97,8 @@ async function insertData(url, obj){
 }
 
 function renderData(data){
-    const contentsHTML = documnt.querySelector('#data-contents');
-
+    const contentsHTML = document.querySelector('#data-contents');
+    
 }
 
 

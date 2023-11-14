@@ -15,11 +15,13 @@ const pool = new Pool({
     port: process.env.DB_PORT
 })
 
+//  ------------------------------------------------------------ MIDDLEWARE
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'))
 
-// GET ROUTES
+//  ------------------------------------------------------------ API ROUTES
 app.get('/api/game', async (req, res) => {
     try{
         const result = await pool.query(
@@ -70,7 +72,7 @@ app.post('/api/game', async (req, res) => {
     }
 })
 
-app.put('/api/game/:id', async(req, res) => {
+app.put('/api/game/:id', async (req, res) => {
     const { id } = req.params
     const { gameName, developer, gameShopId } = req.body
     try{
@@ -91,8 +93,25 @@ app.put('/api/game/:id', async(req, res) => {
     }
 })
 
+app.delete('/api/game/:id', async (req, res) => {
+    const { id } = req.params;
+    try{
+        const result = await pool.query(
+            `DELETE FROM game WHERE id=$1
+            RETURNING *;`, [id]
+        )
+        if(result.rows.length === 0){
+            return res.status(400).send(`Could not delete ${id}`)
+        }
+        res.send(result.rows)
+    } catch (error){
+        console.log(error)
+        res.json(error)
+    }
+})
 
-// CATCH ALL MIDDLEWARE
+
+//  ------------------------------------------------------------ CATCH ALL ROUTE
 app.use('/', (req, res, next) => {
     next({message: "The path you are looking for does not exist", status: 404})
 })
@@ -102,6 +121,7 @@ app.use((err, req, res, next) => {
 })
 
 
+//  ------------------------------------------------------------ SERVER LISTENER
 
 app.listen(apiPort, () => {
     console.log(`server listening on http://localhost:${apiPort}`)
