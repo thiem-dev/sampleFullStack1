@@ -70,6 +70,28 @@ app.post('/api/game', async (req, res) => {
     }
 })
 
+app.put('/api/game/:id', async(req, res) => {
+    const { id } = req.params
+    const { gameName, developer, gameShopId } = req.body
+    try{
+        const result = await pool.query(
+            `UPDATE game
+            SET name=$1, developer=$2, gameShop_id=$3
+            WHERE id=$4
+            RETURNING *;
+            `, [gameName, developer, gameShopId, id]
+        )
+        if(result.rows.length === 0){
+            return res.status(400).send(`Could not update ${req.body}`)
+        }
+        res.status(201).send(result.rows)
+    } catch(error){
+        console.log(error)
+        res.json(error)
+    }
+})
+
+
 // CATCH ALL MIDDLEWARE
 app.use('/', (req, res, next) => {
     next({message: "The path you are looking for does not exist", status: 404})
