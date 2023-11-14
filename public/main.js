@@ -52,14 +52,14 @@ function initEventListeners(){
 
     iElem.addNewValBtn.addEventListener('click', () => {
         const userInputObj = {
-            gameName: querySelector('#gameName').value,
-            developer: querySelector('#developerName').value,
-            gameShopId: querySelector('#gameShopId').value
+            gameName: document.querySelector('#gameName').value,
+            developer: document.querySelector('#developerName').value,
+            gameShopId: document.querySelector('#gameShopId').value
         }
         
         console.log('addNewValBtn clicked', gameName, developerName, gameShopId)
 
-        insertData(url, userInputObj);
+        insertData(apiURL, userInputObj);
     });
 }
 
