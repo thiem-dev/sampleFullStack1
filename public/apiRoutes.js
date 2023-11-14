@@ -41,11 +41,9 @@ app.get('/api/game/:gName', async (req, res) => {
             `SELECT * FROM game
             WHERE name=$1;`, [gName]
         )
-        
         if(result.rows.length === 0){
             return res.status(400).send(`Game Name: ${gName} does not exist`);
         }
-
         res.send(result.rows)
     } catch(error){
         console.log(error)
@@ -61,7 +59,6 @@ app.post('/api/game', async (req, res) => {
             ($1, $2, $3) 
             RETURNING *`, [gameName, developer, gameShopId]
         );
-
         if(result.rows.length === 0){
             return res.status(400).send(`Could not insert ${req.body}`)
         }
