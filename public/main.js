@@ -11,7 +11,9 @@ window.addEventListener('DOMContentLoaded', (event) =>{
 
 
 const interactiveElements = {
-    userForm: `#userForm`,
+    gameSearch: `#gameSearch`,
+    addNewValBtn: `#addNewVal`,
+    searchAllBtn: `#searchAllBtn`
 }
 
 const iElem = interactiveElements;
@@ -30,22 +32,43 @@ function initQselectors(){
 }
 
 function initEventListeners(){
-    iElem.userForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        // const fname = document.querySelector('#fname').value;
-        // const lname = document.querySelector('#lname').value;
+    iElem.gameSearch.addEventListener('click', (event) => {
+        const userSearch = document.querySelector('#userSearch').value
+        let url = `http://localhost:3000/api/game`
 
-        var urlParams = new URLSearchParams(window.location.search);
-        var fname = urlParams.get('fname');
-        var lname = urlParams.get('lname');
+        console.log('single search click', userSearch)
 
-
-        
-
-        console.log(urlParams)
-        console.log('fname', fname);
-        console.log('lname', lname);
+        if(userSearch.value !== ''){
+            console.log(`user search is empty: `, userSearch)
+            url = `http://localhost:3000/api/game/${userSearch}`
+        }
+        getData(url);
     });
+
+    iElem.searchAllBtn.addEventListener('click', (event) =>{
+        console.log('searchAll click', userSearch)
+        let url = `http://localhost:3000/api/game`
+        getData(url);
+
+    })
+}
+
+
+
+async function getData(url){
+    try{
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('GET success', data)
+
+    } catch(error) {
+        console.error('Error during POST request:', error);
+    }
 }
 
 

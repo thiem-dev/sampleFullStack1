@@ -1,5 +1,6 @@
 import express from 'express';
-import pg from 'pg'
+import pg from 'pg';
+import cors from 'cors';
 
 const { Pool } = pg;
 const apiPort = 3000;
@@ -14,18 +15,20 @@ const pool = new Pool({
     port: process.env.DB_PORT
 })
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'))
 
+// GET ROUTES
 app.get('/api/game', async (req, res) => {
     try{
         const result = await pool.query(
             `SELECT * FROM game;`
         )
-        res.send(result.rows)
+        res.status(201).send(result.rows)
     } catch(error){
         console.log(error)
-        res.json(error)
+        res.status(400).json(error)
     }
 });
 
@@ -47,6 +50,15 @@ app.get('/api/game/:gName', async (req, res) => {
         res.json(error)
     }
 });
+
+// CATCH ALL MIDDLEWARE
+app.use('/', (req, res, next) => {
+    next({message: "The path you are looking for does not exist", status: 404})
+})
+
+app.use((err, req, res, next) => {
+    res.status(err.status).json({ error: err })
+})
 
 
 

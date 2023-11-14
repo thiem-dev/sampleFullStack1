@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="./main.js"></script>
-    <script defer src="./apiRoutes.js"></script>
+    <!-- <script defer type="module" src="./apiRoutes.js"></script> -->
 
 
     <title>TH fullstack app</title>
@@ -13,17 +13,11 @@
     <h1>Thiem's first full stack app</h1>
     <h2>PERN (localhost will connect later)</h2>
 
-    <!-- <form id="userForm">
-        <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" placehodler value=""><br>
-        <label for="lname">Last name:</label><br>
-        <input type="text" id="lname" name="lname" value="Doe"><br><br>
-        <input type="submit" value="Submit">
-    </form>  -->
-
     <div class="search-ctn">
         <h2>Search based on Game's Name</h2>
-        <input type="text" id="usergName" name="usergName" placehodler value="Mystic Quest">
+        <input type="text" id="userSearch" name="userSearch" placeholder="Mystic Quest">
+        <button id="gameSearch">Search Game</button>
+        <button id="searchAllBtn">Show All</button>
     </div>
 
     <div class="form-ctn">
