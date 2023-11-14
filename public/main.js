@@ -1,3 +1,7 @@
+/* TODO:
+    - try bootstrap for styling
+*/
+
 
 window.addEventListener('DOMContentLoaded', (event) =>{
     init();
@@ -27,7 +31,7 @@ function initQselectors(){
 }
 
 function initEventListeners(){
-    iElem.gameSearch.addEventListener('click', () => {
+    iElem.gameSearch.addEventListener('click', async () => {
         const userSearch = document.querySelector('#userSearch').value
 
         console.log('single search click', userSearch)
@@ -36,16 +40,18 @@ function initEventListeners(){
             console.log(`user search is empty: `, userSearch)
             apiURL = `http://localhost:3000/api/game/${userSearch}`
         }
-        getData(apiURL);
+        const data = await getData(apiURL);
+        renderData(data);
     });
 
-    iElem.searchAllBtn.addEventListener('click', () => {
+    iElem.searchAllBtn.addEventListener('click', async () => {
         console.log('searchAll click')
-        getData(apiURL);
+        const data = await getData(apiURL);
+        renderData(data);
 
     })
 
-    iElem.addNewValBtn.addEventListener('click', () => {
+    iElem.addNewValBtn.addEventListener('click', async () => {
         const userInputObj = {
             gameName: document.querySelector('#gameName').value,
             developer: document.querySelector('#developerName').value,
@@ -54,7 +60,8 @@ function initEventListeners(){
         
         console.log('addNewValBtn clicked', gameName, developerName, gameShopId)
 
-        insertData(apiURL, userInputObj);
+        const data = await insertData(apiURL, userInputObj);
+        renderData(data);
     });
 }
 
@@ -70,6 +77,7 @@ async function getData(url){
 
         const data = await response.json();
         console.log('GET success', data)
+        return data;
     } catch(error) {
         console.error('Error during POST request:', error);
     }
@@ -91,13 +99,33 @@ async function insertData(url, obj){
 
         data = await response.json();
         console.log('POST request SUCCESS:', data)
+        return data;
     } catch (error){
         console.error('ERROR during POST request:', error);
     }
 }
 
-function renderData(data){
-    const contentsHTML = document.querySelector('#data-contents');
+function renderData(arr){
+    console.log(arr)
+    const contentsCtn = document.querySelector('#data-contents');
+    contentsCtn.innerHTML=``; //empty out container
+
+    let contentsHTML = ``;
+
+    contentsHTML += `<h2>Search/Input Results here</h2>`;
+    arr.forEach((game,index) => {
+        contentsHTML +=`
+        <div class="gameCard" id="gameId${game.id}">
+            <div class="gameId">GameId: ${game.id}</div>
+            <div class="title">${game.name}</div>
+            <div class="developer">${game.developer}</div>
+            <div class="shopLocation">ShopLocation: ${game.gameshop_id}</div>
+        </div>
+        <br><br>
+        `
+    });
+
+    contentsCtn.innerHTML= contentsHTML;
     
 }
 
