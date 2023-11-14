@@ -15,14 +15,16 @@ const interactiveElements = {
     searchAllBtn: `#searchAllBtn`
 }
 
+//todo save data retrived from db in a variable for callback
+
 const iElem = interactiveElements;
 let apiURL = `http://localhost:3000/api/game`;
 
 function init(){
     initQselectors()
     initEventListeners();
+    initCardListeners();
 }
-
 
 function initQselectors(){
     for(let [elem, selector] of Object.entries(iElem)){
@@ -120,13 +122,26 @@ function renderData(arr){
             <div class="title">${game.name}</div>
             <div class="developer">${game.developer}</div>
             <div class="shopLocation">ShopLocation: ${game.gameshop_id}</div>
+            <button class="editBtn">Edit</button>
         </div>
         <br><br>
         `
     });
 
     contentsCtn.innerHTML= contentsHTML;
-    
+    initCardListeners();
+}
+
+function initCardListeners(){
+    const editBtnsElements = document.querySelectorAll('.editBtn')
+
+    editBtnsElements.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // console.log(e.target.parentElement.id)
+            const id = String(e.target.parentElement.id).split('gameId')[1]
+            console.log(id)
+        })
+    })
 }
 
 
