@@ -40,9 +40,13 @@ function initEventListeners(){
         var lname = urlParams.get('lname');
 
 
+        
+
         console.log(urlParams)
         console.log('fname', fname);
         console.log('lname', lname);
     });
 }
+
+
 

@@ -17,4 +17,39 @@ const pool = new Pool({
 app.use(express.json());
 app.use(express.static('public'))
 
-app.get('/api/game')
+app.get('/api/game', async (req, res) => {
+    try{
+        const result = await pool.query(
+            `SELECT * FROM game;`
+        )
+        res.send(result.rows)
+    } catch(error){
+        console.log(error)
+        res.json(error)
+    }
+});
+
+app.get('/api/game/:gName', async (req, res) => {
+    const {gName} = req.params;
+    try{
+        const result = await pool.query(
+            `SELECT * FROM game
+            WHERE name=$1;`, [gName]
+        )
+        
+        if(result.rows.length === 0){
+            return res.status(404).send(`Game Name: ${gName} does not exist`);
+        }
+
+        res.send(result.rows)
+    } catch(error){
+        console.log(error)
+        res.json(error)
+    }
+});
+
+
+
+app.listen(apiPort, () => {
+    console.log(`server listening on http://localhost:${apiPort}`)
+})

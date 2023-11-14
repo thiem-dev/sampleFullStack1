@@ -13,22 +13,49 @@
     <h1>Thiem's first full stack app</h1>
     <h2>PERN (localhost will connect later)</h2>
 
-    <form id="userForm">
+    <!-- <form id="userForm">
         <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" value="John"><br>
+        <input type="text" id="fname" name="fname" placehodler value=""><br>
         <label for="lname">Last name:</label><br>
         <input type="text" id="lname" name="lname" value="Doe"><br><br>
         <input type="submit" value="Submit">
-    </form> 
+    </form>  -->
 
-    <div class="dashboard">
-        <div class="dashboardContents">
-            <div id="1">
+    <div class="search-ctn">
+        <h2>Search based on Game's Name</h2>
+        <input type="text" id="usergName" name="usergName" placehodler value="Mystic Quest">
+    </div>
+
+    <div class="form-ctn">
+        <h2>Submit new values</h2>
+        <label>Game Name</label>
+        <input type="text" id="gameName" name="gameName" placeholder="Halo"><br>
+        <label>Developer Name</label>
+        <input type="text" id="developerName" name="developerName" placeholder="Bungie"><br>
+        <label>GameShop Location by ID</label>
+        <input type="number" id="gameShopId" name="gameShopId" placeholder="3"><br>
+        <button id="addNewVal">Add New Value</button>
+    </div>
+
+
+    <hr>
+    <div class="data-ctn">
+        <div class="data-contents">
+            <h2>Search/Input Results here</h2>
+            <div id="game1">
                 <div class="title">Halo</div>
                 <div class="developer">Bungie</div>
                 <div class="shopLocation">Shop Location: Game Stop - Nashville</div>
             </div>
         </div>
+        <br><br>
+        <div id="game2">
+            <div class="title">Halo</div>
+            <div class="developer">Bungie</div>
+            <div class="shopLocation">Shop Location: Game Stop - Nashville</div>
+        </div>
+    </div>
+    <br><br>
     </div>
     
 
