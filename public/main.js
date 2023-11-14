@@ -1,5 +1,6 @@
 /* TODO:
-    - try bootstrap for styling
+    - problem when items are inserted and added. I'm ID of the data and then referencing it with -1 to get array value
+    -^ convert returned array into an object so the sequence no longer matters
 */
 
 
@@ -111,10 +112,16 @@ async function insertData(url, obj){
 
         data = await response.json();
         console.log('POST request SUCCESS:', data)
+
+        gameData = await getData(apiURL);
+        renderData(gameData);
+
         return data;
     } catch (error){
         console.error('ERROR during POST request:', error);
     }
+
+
 }
 
 async function updateData(url, obj){
@@ -133,13 +140,18 @@ async function updateData(url, obj){
 
         data = await response.json();
         console.log('PUT request SUCCESS:', data)
+        gameData = await getData(apiURL);
+        renderData(gameData);
+
         // return data;
     } catch (error){
         console.error('ERROR during POST request:', error);
     }
 }
 
-async function deleteData(url){
+async function deleteData(id){
+    let url = `${apiURL}/${id}`
+
     try{
         const response = await fetch(url, {
             method: 'DELETE',
@@ -150,10 +162,14 @@ async function deleteData(url){
 
         data = await response.json();
         console.log('DELETE request SUCCESS:', data)
+        gameData = await getData(apiURL);
+        renderData(gameData);
         // return data;
     } catch (error){
         console.error('ERROR during POST request:', error);
     }
+
+
 }
 
 //  ------------------------------------------------------- UTIL FUNCTIONS
@@ -185,15 +201,31 @@ function renderData(arr){
 }
 
 function initCardListeners(){
-    const editBtnsElements = document.querySelectorAll('.editBtn')
+    const editBtnElements = document.querySelectorAll('.editBtn')
     const deleteBtnElements = document.querySelectorAll('.deleteBtn')
 
-    editBtnsElements.forEach(btn => {
+    editBtnElements.forEach(btn => {
         btn.addEventListener('click', (e) => {
             // console.log(e.target.parentElement.id)
             const id = String(e.target.parentElement.id).split('gameId')[1]
             renderModal(id)
             console.log(id)
+        })
+    })
+    deleteBtnElements.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // console.log(e.target.parentElement.id)
+            const id = String(e.target.parentElement.id).split('gameId')[1]
+            console.log(id)
+            const arrId = Number(id) - 1; //arr id 0 index, db is 1 index
+            console.log('inside delete', gameData, id, arrId)
+            const prompt = `Are you sure you want to delete ${gameData[arrId].name}`
+            if(confirm(prompt) === true){
+                deleteData(id)
+                console.log('delete',id)
+            } else{
+                return; //do nothing
+            }
         })
     })
 }
@@ -203,6 +235,7 @@ async function renderModal(gameId){
     //     gameData = getData;
     // }
     gameArrIndex = gameId - 1; //db counts from 1;
+    let url = apiURL; //instead of modifying the global
 
     const game = gameData[gameArrIndex]
     const modalCtn = document.querySelector('.modal-ctn')
@@ -236,9 +269,10 @@ async function renderModal(gameId){
             gameShopId: document.querySelector('#gameShopId-mdl').value
         }
 
-        apiURL += `/${gameId}`
-        console.log('put',apiURL)
-        updateData(apiURL, userInputObj)
+        url += `/${gameId}`
+        console.log('put',url)
+        updateData(url, userInputObj)
+
     })
 
     const modalCloseBtn = document.querySelector('#closeBtn-mdl')
