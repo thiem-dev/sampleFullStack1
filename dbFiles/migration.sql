@@ -14,6 +14,7 @@ CREATE TABLE game(
     gameShop_id int,
     FOREIGN KEY (gameShop_id) REFERENCES shop(id)
 );
+-- ALTER SEQUENCE game_id_seq RESTART WITH 1;
 
 -- Sample data for the "shop" table
 INSERT INTO shop (name, city) VALUES

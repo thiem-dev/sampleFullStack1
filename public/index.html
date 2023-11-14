@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="./main.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <script defer type="module" src="./apiRoutes.js"></script> -->
     <link rel="stylesheet" href="./main.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
 
@@ -16,24 +16,6 @@
     <div class="body-ctn">
         <h1>Thiem's first full stack app</h1>
         <h2>PERN (only on localhost, will connect to real db later)</h2>
-    
-        <div class="modal-ctn">
-            <div class="modal-content rounded-4 shadow">
-                <div class="close-ctn">
-                    <button class=".closeBtn">X</button>
-                </div>
-                <div class="modal-body p-5">
-                  <h2 class="fw-bold mb-0">Edit Game</h2>
-                  <label>Game Name</label>
-                  <input type="text" id="gameName-mdl" name="gameName" placeholder="Halo"><br>
-                  <label>Developer Name</label>
-                  <input type="text" id="developerName-mdl" name="developerName" placeholder="Bungie"><br>
-                  <label>GameShop Location by ID</label>
-                  <input type="number" id="gameShopId-mdl" name="gameShopId" placeholder="3"><br>
-                  <button id="editBtn-mdl" type="button" class="btn btn-lg btn-primary mt-5 w-100" data-bs-dismiss="modal">Finish Edit</button>
-                </div>
-              </div>
-        </div>
         
     
         <div class="search-ctn">
@@ -66,19 +48,39 @@
                     <div class="shopLocation">ShopLocation: 4</div>
                     <button class="editBtn">Edit</button>
                 </div>
+                <br><br>
+                <div class="gameCard" id="gameId2">
+                    <div class="gameId">GameId: 2</div>
+                    <div class="title">Halo</div>
+                    <div class="developer">Bungie</div>
+                    <div class="shopLocation">ShopLocation: 5</div>
+                    <button class="editBtn">Edit</button>
+                </div>
             </div>
-            <br><br>
-            <div class="gameCard" id="gameId2">
-                <div class="gameId">GameId: 2</div>
-                <div class="title">Halo</div>
-                <div class="developer">Bungie</div>
-                <div class="shopLocation">ShopLocation: 5</div>
-                <button class="editBtn">Edit</button>
-            </div>
+           
+            
         </div>
+
+
+        <div class="modal-ctn hide">
+            <div class="modal-content rounded-4 shadow">
+                <button id="closeBtn-mdl">X</button>
+                <div class="modal-body p-5">
+                  <h2 class="fw-bold mb-0">Edit Game</h2>
+                  <label>Game Name</label>
+                  <input type="text" id="gameName-mdl" name="gameName" placeholder="Halo"><br>
+                  <label>Developer Name</label>
+                  <input type="text" id="developerName-mdl" name="developerName" placeholder="Bungie"><br>
+                  <label>GameShop Location by ID</label>
+                  <input type="number" id="gameShopId-mdl" name="gameShopId" placeholder="3"><br>
+                  <button id="editBtn-mdl">Finish Edit</button>
+                </div>
+              </div>
         </div>
-    </div>
+        
+    </div> <!-- end body-ctn -->
     
+
 
 </body>
 </html>

@@ -12,18 +12,23 @@ window.addEventListener('DOMContentLoaded', (event) =>{
 const interactiveElements = {
     gameSearch: `#gameSearch`,
     addNewValBtn: `#addNewValBtn`,
-    searchAllBtn: `#searchAllBtn`
+    searchAllBtn: `#searchAllBtn`,
+    modalCloseBtn: `#closeBtn-mdl`
 }
 
 //todo save data retrived from db in a variable for callback
 
 const iElem = interactiveElements;
 let apiURL = `http://localhost:3000/api/game`;
+let gameData = [];
 
-function init(){
+async function init(){
     initQselectors()
     initEventListeners();
     initCardListeners();
+
+    gameData = await getData(apiURL);
+    renderData(gameData);
 }
 
 function initQselectors(){
@@ -42,14 +47,14 @@ function initEventListeners(){
             console.log(`user search is empty: `, userSearch)
             apiURL = `http://localhost:3000/api/game/${userSearch}`
         }
-        const data = await getData(apiURL);
-        renderData(data);
+        gameData = await getData(apiURL);
+        renderData(gameData);
     });
 
     iElem.searchAllBtn.addEventListener('click', async () => {
         console.log('searchAll click')
-        const data = await getData(apiURL);
-        renderData(data);
+        const gameData = await getData(apiURL);
+        renderData(gameData);
 
     })
 
@@ -62,9 +67,14 @@ function initEventListeners(){
         
         console.log('addNewValBtn clicked', gameName, developerName, gameShopId)
 
-        const data = await insertData(apiURL, userInputObj);
-        renderData(data);
+        const gameData = await insertData(apiURL, userInputObj);
+        renderData(gameData);
     });
+
+    iElem.modalCloseBtn.addEventListener('click', () => {
+        const modalCtn = document.querySelector('.modal-ctn')
+        modalCtn.classList.add('hide')
+    })
 }
 
 //  ------------------------------------------------------- UTIL FUNCTIONS
@@ -107,8 +117,30 @@ async function insertData(url, obj){
     }
 }
 
+async function updateData(url, obj){
+    try{
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                //include other headers?
+            },
+            body: JSON.stringify(obj)
+        });
+        if(!response.ok){
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        data = await response.json();
+        console.log('PUT request SUCCESS:', data)
+        // return data;
+    } catch (error){
+        console.error('ERROR during POST request:', error);
+    }
+}
+
 function renderData(arr){
-    console.log(arr)
+    // console.log(arr)
     const contentsCtn = document.querySelector('#data-contents');
     contentsCtn.innerHTML=``; //empty out container
 
@@ -139,8 +171,60 @@ function initCardListeners(){
         btn.addEventListener('click', (e) => {
             // console.log(e.target.parentElement.id)
             const id = String(e.target.parentElement.id).split('gameId')[1]
+            renderModal(id)
             console.log(id)
         })
+    })
+}
+
+async function renderModal(gameId){
+    // if(gameData.length === 0){
+    //     gameData = getData;
+    // }
+    gameArrIndex = gameId - 1; //db counts from 1;
+
+    const game = gameData[gameArrIndex]
+    const modalCtn = document.querySelector('.modal-ctn')
+    modalCtn.innerHTML=`` //empty the contents
+    modalCtn.classList.remove('hide')
+
+    let modalHTML = `
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-body p-5">
+                <button id="closeBtn-mdl">X</button>
+                  <h2 class="fw-bold mb-0">Edit: ${game.name}?</h2>
+                  <label>Game Name</label>
+                  <input type="text" id="gameName-mdl" name="gameName" value='${game.name}'><br>
+                  <label>Developer Name</label>
+                  <input type="text" id="developerName-mdl" name="developerName" value='${game.developer}'><br>
+                  <label>GameShop Location by ID</label>
+                  <input type="number" id="gameShopId-mdl" name="gameShopId" value='${game.gameshop_id}'><br>
+                  <button id="editBtn-mdl">Finish Edit</button>
+                </div>
+              </div>
+              `
+    
+    modalCtn.innerHTML = modalHTML;
+
+    const editBtnMdl = document.querySelector('#editBtn-mdl')
+
+    editBtnMdl.addEventListener('click', (e) => {
+        const userInputObj = {
+            gameName: document.querySelector('#gameName-mdl').value,
+            developer: document.querySelector('#developerName-mdl').value,
+            gameShopId: document.querySelector('#gameShopId-mdl').value
+        }
+
+        apiURL += `/${gameId}`
+        console.log('put',apiURL)
+        updateData(apiURL, userInputObj)
+    })
+
+    const modalCloseBtn = document.querySelector('#closeBtn-mdl')
+    
+    modalCloseBtn.addEventListener('click', () => {
+        const modalCtn = document.querySelector('.modal-ctn')
+        modalCtn.classList.add('hide')
     })
 }
 

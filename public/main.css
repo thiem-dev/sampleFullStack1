@@ -23,18 +23,25 @@ body{
     top: 30vh;
     width: auto;
     background-color: white;
-    display:none;
+}
+
+.hide{
+    visibility: hidden;
+}
+
+.modal-ctn{
+    position:fixed;
 }
 
 .modal-content{
 
 }
 
-.close-ctn{
-    width:100%;
+#closeBtn-mdl{
+    /* width:100%; */
     margin-top:1rem;
     margin-right:1rem;
-    /* width:30px; */
+    width:30px;
     height:30px;
     
 }

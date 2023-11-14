@@ -25,7 +25,8 @@ app.use(express.static('public'))
 app.get('/api/game', async (req, res) => {
     try{
         const result = await pool.query(
-            `SELECT * FROM game;`
+            `SELECT * FROM game
+            ORDER BY id ASC;`
         )
         res.status(201).send(result.rows)
     } catch(error){
