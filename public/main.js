@@ -77,8 +77,8 @@ function initEventListeners(){
     })
 }
 
-//  ------------------------------------------------------- UTIL FUNCTIONS
 
+//  ------------------------------------------------------- API ROUTE FUNCTIONS
 async function getData(url){
     try{
         const response = await fetch(url);
@@ -139,6 +139,25 @@ async function updateData(url, obj){
     }
 }
 
+async function deleteData(url){
+    try{
+        const response = await fetch(url, {
+            method: 'DELETE',
+        });
+        if(!response.ok){
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        data = await response.json();
+        console.log('DELETE request SUCCESS:', data)
+        // return data;
+    } catch (error){
+        console.error('ERROR during POST request:', error);
+    }
+}
+
+//  ------------------------------------------------------- UTIL FUNCTIONS
+
 function renderData(arr){
     // console.log(arr)
     const contentsCtn = document.querySelector('#data-contents');
@@ -155,6 +174,7 @@ function renderData(arr){
             <div class="developer">${game.developer}</div>
             <div class="shopLocation">ShopLocation: ${game.gameshop_id}</div>
             <button class="editBtn">Edit</button>
+            <button class="deleteBtn">Delete</button>
         </div>
         <br><br>
         `
@@ -166,6 +186,7 @@ function renderData(arr){
 
 function initCardListeners(){
     const editBtnsElements = document.querySelectorAll('.editBtn')
+    const deleteBtnElements = document.querySelectorAll('.deleteBtn')
 
     editBtnsElements.forEach(btn => {
         btn.addEventListener('click', (e) => {
